@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Posts</title>
+    <style>
+        .post {
+            border: 1px solid #ccc;
+            padding: 10px;
+            margin-bottom: 10px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Список постов</h1>
+    <button onclick="addNewPost()">Добавить новый пост</button>
+    {% if posts %}
+        {% for post in posts %}
+            <div class="post">
+                <h3>{{ post.title }}</h3>
+                <p><strong>Номер поста:</strong> {{ post.post_id }}</p>
+                <p><strong>Автор:</strong> {{ post.author }}</p>
+                <p><strong>Тема:</strong> {{ post.theme }}</p>
+                <p><strong>Дата публикации:</strong> {{ post.pub_date }}</p>
+                <p><strong>Содержание:</strong> {{ post.content }}</p>
+                <p><strong>Лайки:</strong> <span id="likes{{ post.post_id }}">{{ post.likes }}</span></p>
+
+                <button onclick="modifyLikes({{ post.post_id }}, 'increase')">Увеличить лайк</button>
+                <button onclick="modifyLikes({{ post.post_id }}, 'decrease')">Уменьшить лайк</button>
+
+                <button onclick="editPost({{ post.post_id }})">Редактировать пост</button>
+                <button onclick="deletePost({{ post.post_id }})">Удалить пост</button>
+            </div>
+        {% endfor %}
+    {% else %}
+        <p>Нет доступных постов</p>
+    {% endif %}
+
+    <script>
+        function addNewPost() {
+            window.location.href = 'http://127.0.0.1:5000/add_post';
+        }
+
+        function editPost(postId) {
+            window.location.href = 'http://127.0.0.1:5000/edit_post/' + postId;
+        }
+
+        function deletePost(postId) {
+            fetch('http://127.0.0.1:5000/delete_post/' + postId, {
+                method: 'DELETE',
+            })
+            .then(response => {
+                if (response.ok) {
+                    window.location.reload();
+                } else {
+                    console.error('Failed to delete post');
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+            });
+        }
+
+        function modifyLikes(postId, action) {
+            fetch(`http://127.0.0.1:5000/modify_likes/${postId}`, {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ action: action }),
+            })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error(`Failed to modify likes for post ${postId}`);
+                }
+                return response.json();
+            })
+            .then(data => {
+                // Проверка на наличие данных перед обновлением отображения лайков
+                if (data && data.likes !== undefined) {
+                    const likesElement = document.getElementById(`likes${postId}`);
+                    if (likesElement) {
+                        likesElement.innerText = data.likes;
+                    }
+                } else {
+                    console.error('Invalid data received:', data);
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+            });
+        }
+    </script>
+</body>
+</html>

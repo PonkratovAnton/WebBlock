@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Редактирование поста</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 5px;
+        }
+
+        input, select, textarea {
+            width: 100%;
+            padding: 8px;
+            margin-bottom: 10px;
+            box-sizing: border-box;
+        }
+
+        button {
+            background-color: #4CAF50;
+            color: white;
+            padding: 10px 15px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #45a049;
+        }
+    </style>
+</head>
+<body>
+    <h1>Редактирование поста</h1>
+
+    <form id="editForm">
+        <label for="author">Автор:</label>
+        <select id="author" name="author_id" required>
+            {% for author in authors %}
+                <option value="{{author.author_id}}" {% if author.author_id == post.author_id %}selected{% endif %}>
+                    {{ author.name }}
+                </option>
+            {% endfor %}
+        </select>
+
+        <label for="theme">Тема:</label>
+        <select id="theme" name="theme_id" required>
+            {% for theme in themes %}
+                <option value="{{theme.theme_id}}" {% if theme.theme_id == post.theme_id %}selected{% endif %}>
+                    {{ theme.name }}
+                </option>
+            {% endfor %}
+        </select>
+
+        <label for="content">Содержание:</label>
+        <textarea id="content" name="content" required>{{ post.content }}</textarea>
+
+        <button type="button" onclick="submitForm()">Сохранить изменения</button>
+    </form>
+
+    <script>
+        function submitForm() {
+            // Создание объекта с нужными данными
+            var formDataObject = {
+                "author_id": parseInt(document.getElementById("author").value, 10),
+                "theme_id": parseInt(document.getElementById("theme").value, 10),
+                "content": document.getElementById("content").value
+            };
+
+            // Преобразование объекта в JSON
+            var jsonData = JSON.stringify(formDataObject);
+
+            fetch("http://127.0.0.1:5000/update_post/{{ post.post_id }}", {
+                method: "PUT",
+                body: jsonData,
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            })
+            .then(response => response.json())
+            .then(data => {
+                console.log(data);
+                window.location.href = "http://127.0.0.1:5000/";
+            })
+            .catch(error => console.error('Error:', error));
+        }
+    </script>
+</body>
+</html>
