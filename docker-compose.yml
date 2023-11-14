@@ -5,7 +5,7 @@ services:
       context: .
       dockerfile: Dockerfile
     ports:
-      - "8080:8080"
+      - "${APP_PORT}:8080"
     volumes:
       - ./templates:/templates
     depends_on:
@@ -14,8 +14,10 @@ services:
   db:
     image: postgres:14
     environment:
-      POSTGRES_DB: web_block
-      POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: 04041954-
+      POSTGRES_DB: "${NAME_DB}"
+      POSTGRES_USER: "${POSTGRES_USER}"
+      POSTGRES_PASSWORD: "${PASSWORD_DB}"
     ports:
-      - 5432:5432
+      - ${PORT_DB}:5432
+    env_file:
+          - .env

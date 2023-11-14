@@ -17,7 +17,7 @@
     <h1>Список постов</h1>
     <button onclick="addNewPost()">Добавить новый пост</button>
     {% if posts %}
-        {% for post in posts %}
+        {% for post in posts|sort(attribute='post_id') %}
             <div class="post">
                 <h3>{{ post.title }}</h3>
                 <p><strong>Номер поста:</strong> {{ post.post_id }}</p>
@@ -40,15 +40,15 @@
 
     <script>
         function addNewPost() {
-            window.location.href = 'http://127.0.0.1:5000/add_post';
+            window.location.href = '{{url_address}}/add_post';
         }
 
         function editPost(postId) {
-            window.location.href = 'http://127.0.0.1:5000/edit_post/' + postId;
+            window.location.href = '{{url_address}}/edit_post/' + postId;
         }
 
         function deletePost(postId) {
-            fetch('http://127.0.0.1:5000/delete_post/' + postId, {
+            fetch('{{url_address}}/delete_post/' + postId, {
                 method: 'DELETE',
             })
             .then(response => {
@@ -64,7 +64,7 @@
         }
 
         function modifyLikes(postId, action) {
-            fetch(`http://127.0.0.1:5000/modify_likes/${postId}`, {
+            fetch(`{{url_address}}/modify_likes/${postId}`, {
                 method: 'PUT',
                 headers: {
                     'Content-Type': 'application/json',

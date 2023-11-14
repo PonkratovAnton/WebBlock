@@ -1,19 +1,53 @@
-<h1 id="covid19_scenarios" align="center">
-  Web Resources
-</h1>
+# WebBlock
 
-<blockquote align="center">
-A web application using Python.
+## Настройка окружения
 
-The application provides support for CRUD operations for an entity such as a resource and a resource type
-</blockquote>0
+Прежде чем запустить проект, вам необходимо настроить файл `.env` с необходимыми переменными окружения. Следуйте указаниям ниже:
 
-### Run the project
+1. **Создайте файл `.env`:**
 
-* Clone this repository.
-* Enter the directory where you clone it, and run the following code in the terminal (or command prompt).
+    ```bash
+    touch .env
+    ```
+
+2. **Откройте файл `.env` в текстовом редакторе:**
+
+    ```bash
+    nano .env
+    ```
+
+3. **Добавьте следующие переменные и заполните их соответствующими значениями:**
+
+    ```ini
+    # Пример .env
+
+    # Порт приложения
+    APP_PORT=
+
+    # Хост для базы данных
+    HOST= '0.0.0.0'
+
+    # Пароль для базы данных
+    PASSWORD_DB=
+
+    # Хост базы данных
+    LOCALHOST=
+
+    # Имя базы данных
+    NAME_DB=
+
+    # Пользователь PostgreSQL
+    POSTGRES_USER=
+    ```
+
+    Замените пустые значения вашими данными.
+
+Теперь ваше окружение настроено, и вы готовы запустить проект!
+
+## Запуск проекта
+
+Для запуска проекта выполните следующие шаги:
+
 ```sh
 docker build -t web-block .
 docker-compose up --build
-```
-The application is now available at : http://localhost:8080

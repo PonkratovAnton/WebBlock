@@ -1,12 +1,10 @@
-from sqlalchemy import create_engine, MetaData
-from sqlalchemy.ext.declarative import declarative_base
+from sqlalchemy import create_engine
 
 from sqlalchemy.orm import sessionmaker
 
-# engine = create_engine('postgresql://postgres:04041954-@localhost/web_block', echo=True)
-engine = create_engine('postgresql://postgres:04041954-@db:5432/web_block')
+from config import password_db, localhost, name_db, postgres_user, port_db
+
+engine = create_engine(f'postgresql://{postgres_user}:{password_db}@{localhost}:{port_db}/{name_db}')
 Session = sessionmaker(bind=engine)
 session = Session()
-
-Base = declarative_base()
 

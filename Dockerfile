@@ -10,4 +10,4 @@ COPY . /app
 
 ENV PYTHONPATH="/app:${PYTHONPATH}"
 
-CMD ["sh", "-c", "sleep 10 && python runner.py && python create_db.py"]
+CMD ["sh", "-c", "sleep 30 && python create_db.py && python runner.py"]

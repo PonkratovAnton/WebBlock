@@ -1,11 +1,10 @@
 from datetime import datetime
 
 from sqlalchemy import Column, Integer, String, ForeignKey, DateTime
+from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import relationship
 
-from app.database import Base, engine
-
-
+Base = declarative_base()
 
 
 class Author(Base):
@@ -32,4 +31,4 @@ class Post(Base):
     theme = relationship("Theme")
 
 
-Base.metadata.create_all(bind=engine)
+

@@ -77,7 +77,7 @@
             // Преобразование объекта в JSON
             var jsonData = JSON.stringify(formDataObject);
 
-            fetch("http://127.0.0.1:5000/create_post", {
+            fetch("{{url_address}}/create_post", {
                 method: "POST",
                 body: jsonData,
                 headers: {
@@ -88,7 +88,7 @@
             .then(data => {
                 console.log(data);
                 // После успешного создания поста, перенаправляем на страницу со списком постов
-                window.location.href = "http://127.0.0.1:5000/";
+                window.location.href = "{{url_address}}";
             })
             .catch(error => console.error('Error:', error));
         }

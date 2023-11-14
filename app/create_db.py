@@ -1,9 +1,9 @@
 from faker import Faker
 
-from app.database import session
+from app.database import session, engine
 from app.models import *
 
-# Base.metadata.create_all(bind=engine)
+Base.metadata.create_all(bind=engine)
 fake = Faker("ru_RU")
 
 # Добавление данных в базу
