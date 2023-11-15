@@ -77,16 +77,9 @@
                 }
                 return response.json();
             })
-            .then(data => {
-                // Проверка на наличие данных перед обновлением отображения лайков
-                if (data && data.likes !== undefined) {
-                    const likesElement = document.getElementById(`likes${postId}`);
-                    if (likesElement) {
-                        likesElement.innerText = data.likes;
-                    }
-                } else {
-                    console.error('Invalid data received:', data);
-                }
+            .then(() => {
+                // После успешного выполнения запроса обновляем страницу
+                window.location.reload();
             })
             .catch(error => {
                 console.error('Error:', error);
